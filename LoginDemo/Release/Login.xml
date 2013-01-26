@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Window mininfo="200,360" size=" 480,320 ">
+		<Font name="幼圆" size="16" default="true" />
+		<VerticalLayout bkcolor="#FFFF00FF">
+			<Button name="changeskinbtn" height="20" text="测试按钮" maxwidth="120" />
+		</VerticalLayout>
+</Window>
