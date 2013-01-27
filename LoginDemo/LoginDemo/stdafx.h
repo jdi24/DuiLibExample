@@ -15,21 +15,21 @@
 #include <windows.h>
 #include <objbase.h>
 
-#include "DuiLib\include\UIlib.h"
+#include "..\DuiLib\UIlib.h"
 
 using namespace DuiLib;
 
 #ifdef _DEBUG
 #   ifdef _UNICODE
-#       pragma comment(lib, "DuiLib\\lib\\DuiLib_ud.lib")
+#       pragma comment(lib, "..\\lib\\DuiLib_ud.lib")
 #   else
-#       pragma comment(lib, "DuiLib\\lib\\DuiLib_d.lib")
+#       pragma comment(lib, "..\\lib\\DuiLib_d.lib")
 #   endif
 #else
 #   ifdef _UNICODE
-#       pragma comment(lib, "DuiLib\\lib\\DuiLib_u.lib")
+#       pragma comment(lib, "..\\lib\\DuiLib_u.lib")
 #   else
-#       pragma comment(lib, "DuiLib\\lib\\DuiLib.lib")
+#       pragma comment(lib, "..\\lib\\DuiLib.lib")
 #   endif
 #endif
 

@@ -41,8 +41,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\debug\</OutDir>
     <IntDir>debug\</IntDir>
-    <TargetName>LoginDemod</TargetName>
-    <IncludePath>.\DuiLib;$(IncludePath)</IncludePath>
+    <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -60,7 +59,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <OutputFile>..\debug\LoginDemod.exe</OutputFile>
+      <OutputFile>..\debug\$(ProjectName)_d.exe</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
