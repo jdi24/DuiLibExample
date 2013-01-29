@@ -42,6 +42,9 @@
     <OutDir>..\debug\</OutDir>
     <IntDir>debug\</IntDir>
     <TargetName>$(ProjectName)_d</TargetName>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -59,7 +62,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <OutputFile>..\debug\$(ProjectName)_d.exe</OutputFile>
+      <OutputFile>$(OutDir)$(ProjectName)_d$(TargetExt)</OutputFile>
+      <AdditionalLibraryDirectories>$(OutDir)vld</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -80,8 +84,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\vld\vld.h" />
+    <ClInclude Include="..\vld\vld_def.h" />
     <ClInclude Include="CLoginWnd.h" />
     <ClInclude Include="debug.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

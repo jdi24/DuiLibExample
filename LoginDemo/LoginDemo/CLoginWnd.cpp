@@ -2,6 +2,40 @@
 #include "CLoginWnd.h"
 #include "debug.h"
 
+CLoginWindow::CLoginWindow()
+{
+}
+
+CLoginWindow::~CLoginWindow()
+{
+	PostQuitMessage(0);
+}
+
+CDuiString CLoginWindow::GetSkinFolder()
+{
+	return _T("");
+}
+
+CDuiString CLoginWindow::GetSkinFile()
+{
+	return _T("skin.xml");
+}
+
+LPCTSTR CLoginWindow::GetWindowClassName(void) const
+{
+	return _T("UILogin"); 
+}
+
+void CLoginWindow::OnFinalMessage(HWND hWnd) 
+{ 
+	WindowImplBase::OnFinalMessage(hWnd);
+	delete this; 
+}
+
+void CLoginWindow::InitWindow()
+{
+}
+
 void CLoginWindow::Notify(TNotifyUI& msg)
 {
 	if( msg.sType == _T("click") ) {
@@ -13,92 +47,77 @@ void CLoginWindow::Notify(TNotifyUI& msg)
 			SendMessage(WM_SYSCOMMAND, SC_MINIMIZE, NULL);
 			return;
 		}
+		else if ( msg.pSender->GetName() == _T("maxbtn") )
+		{
+			SendMessage(WM_SYSCOMMAND, SC_MAXIMIZE, NULL);
+		}
+		else if ( msg.pSender->GetName() == _T("restorebtn") )
+		{
+			SendMessage(WM_SYSCOMMAND, SC_RESTORE, NULL);
+		}
 	}
 }
 
 
 LRESULT CLoginWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	LRESULT lRes = 0;
-	BOOL bHandled = TRUE;
-	switch( uMsg ) {
-	case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;
-	case WM_NCACTIVATE:    lRes = OnNcActivate(uMsg, wParam, lParam, bHandled); break;
-	case WM_NCCALCSIZE:    lRes = OnNcCalcSize(uMsg, wParam, lParam, bHandled); break;
-	case WM_NCPAINT:       lRes = OnNcPaint(uMsg, wParam, lParam, bHandled); break;
-	case WM_NCHITTEST:     lRes = OnNcHitTest(uMsg, wParam, lParam, bHandled); break;
-	case WM_DESTROY:       lRes = OnDestroy(uMsg, wParam, lParam, bHandled); break;
-	default:
-		bHandled = FALSE;
-	}
-	if( bHandled ) return lRes;
-	if( m_pm.MessageHandler(uMsg, wParam, lParam, lRes) ) return lRes;
-	return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+	return __super::HandleMessage(uMsg, wParam, lParam);
 }
 
-LRESULT CLoginWindow::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT CLoginWindow::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-	m_pm.Init(m_hWnd);
-	CDialogBuilder builder;
-	CControlUI* pRoot = builder.Create(_T("Login.xml"), (UINT)0, NULL, &m_pm);
-	ASSERT(pRoot && "Failed to parse XML");
-	m_pm.AttachDialog(pRoot);
-	m_pm.AddNotifier(this);
-	m_pm.AddPreMessageFilter(this);
-	return 0;
-}
-
-LRESULT CLoginWindow::OnNcActivate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-{
-	if( ::IsIconic(*this) ) bHandled = FALSE;//是否是最小化（图标化）的窗口
-	return (wParam == 0) ? TRUE : FALSE;
-}
-
-LRESULT CLoginWindow::OnNcCalcSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-{
-	return 0;
-}
-
-LRESULT CLoginWindow::OnNcPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-{
-	return 0;
-}
-
-LRESULT CLoginWindow::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-{
-	::PostQuitMessage(0);
-	bHandled = FALSE;
-	return 0;
-}
-
-LRESULT CLoginWindow::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)
-{
-	if ( uMsg == WM_KEYDOWN )
+	BOOL bZoomed = ::IsZoomed(m_hWnd);
+	LRESULT lRes = CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+	if ( ::IsZoomed(m_hWnd) != bZoomed )
 	{
-		if ( wParam == VK_ESCAPE )
+		if ( !bZoomed )
 		{
-			::PostQuitMessage(0);
-			return true;
+			CControlUI* pControl = static_cast<CControlUI*>(m_PaintManager.FindControl("maxbtn"));
+			if ( pControl ) 
+				pControl->SetVisible(false);
+
+			pControl = static_cast<CControlUI*>(m_PaintManager.FindControl("restorebtn"));
+			if ( pControl )
+				pControl->SetVisible(true);
+		}
+		else
+		{
+			CControlUI* pControl = static_cast<CControlUI*>(m_PaintManager.FindControl("maxbtn"));
+			if ( pControl )
+				pControl->SetVisible(true);
+
+			pControl = static_cast<CControlUI*>(m_PaintManager.FindControl("restorebtn"));
+			if ( pControl )
+				pControl->SetVisible(false);
 		}
 	}
-	return false;
+	return 0;
 }
 
-LRESULT CLoginWindow::OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+//LRESULT CLoginWindow::ResponseDefaultKeyEvent(WPARAM wParam)
+//{
+	//if (wParam == VK_RETURN)
+	//{
+	//	return FALSE;
+	//}
+	//else if (wParam == VK_ESCAPE)
+	//{
+	//	return TRUE;
+	//}
+	//return FALSE;
+//}
+
+UILIB_RESOURCETYPE CLoginWindow::GetResourceType() const
 {
-	POINT pt; pt.x = GET_X_LPARAM(lParam); pt.y = GET_Y_LPARAM(lParam);
-	::ScreenToClient(*this, &pt);
+	return UILIB_FILE;
+}
 
-	RECT rcClient;
-	::GetClientRect(*this, &rcClient);
+CControlUI* CLoginWindow::CreateControl(LPCTSTR pstrClass)
+{
+	return NULL;
+}
 
-	RECT rcCaption = m_pm.GetCaptionRect();
-	if( pt.x >= rcClient.left + rcCaption.left && pt.x < rcClient.right - rcCaption.right \
-		&& pt.y >= rcCaption.top && pt.y < rcCaption.bottom ) {
-			CControlUI* pControl = static_cast<CControlUI*>(m_pm.FindControl(pt));
-			if( pControl && _tcscmp(pControl->GetClass(), _T("ButtonUI")) != 0 )
-				return HTCAPTION;
-	}
-
-	return HTCLIENT;
+LRESULT CLoginWindow::HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+	return 0;
 }

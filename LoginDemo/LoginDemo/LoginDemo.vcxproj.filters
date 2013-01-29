@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="vld">
+      <UniqueIdentifier>{19c30853-ec06-4486-b654-3c966fa32c13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -23,6 +26,15 @@
     </ClInclude>
     <ClInclude Include="debug.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vld\vld_def.h">
+      <Filter>vld</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vld\vld.h">
+      <Filter>vld</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Window mininfo="380,295" size="380,295" caption="0,0,0,40" roundcorner="3,3">
+		<Font name="微软雅黑" size="16" default="true" />
+        <VerticalLayout bkimage="file='defaultbkg.png' source='0,0,380,295'" >
+            <HorizontalLayout>
+                <HorizontalLayout>
+                    <!--<Control width="10"/>-->
+                    <!--<Label name="apptitle" text="LoginDemo" font="1" textcolor="#FFFFFFFF" />-->
+                </HorizontalLayout>
+                <HorizontalLayout height="40" width="92">
+                    <Button name="minbtn" height="18" width="25" normalimage="file='minimize.png'" hotimage="file='minimize_h.png'" pushedimage="file='minimize_p.png'" tooltip="最小化"/>
+                    <Button name="maxbtn" height="18" width="25" normalimage="file='maximize.png'" hotimage="file='maximize_h.png'" pushedimage="maximize_p.png" tooltip="最大化" />
+                    <Button name="restorebtn" visible="false" height="18" width="25" normalimage="file='restore.png'" hotimage="file='restore_h.png'" pushedimage="restore_p.png" tooltip="恢复" />
+                    <Button name="closebtn" height="18" width="43" normalimage="file='close.png'" hotimage="file='close_h.png'" pushedimage="close_p.png" tooltip="关闭" />
+                </HorizontalLayout>
+            </HorizontalLayout>
+        </VerticalLayout>
+</Window>

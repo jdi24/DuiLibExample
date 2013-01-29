@@ -1,26 +1,25 @@
 #pragma  once
 
-class CLoginWindow : public CWindowWnd, public IMessageFilterUI, public INotifyUI
+class CLoginWindow : public WindowImplBase
 {
+
 public:
-	CLoginWindow() { };
-	LPCTSTR GetWindowClassName() const { return _T("UILogin"); };
-	UINT GetClassStyle() const { return UI_CLASSSTYLE_FRAME | CS_DBLCLKS; };
-	void OnFinalMessage(HWND /*hWnd*/) { delete this; };
+	CLoginWindow();
+	~CLoginWindow();
+
+public:
+	LPCTSTR GetWindowClassName(void) const;
+	virtual void OnFinalMessage(HWND hWnd);
+	virtual void InitWindow();
+	//virtual LRESULT ResponseDefaultKeyEvent(WPARAM wParam);
+	virtual	UILIB_RESOURCETYPE GetResourceType() const;
+	virtual CDuiString GetSkinFolder();
+	virtual CDuiString GetSkinFile();
+	virtual CControlUI* CreateControl(LPCTSTR pstrClass);
+	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+	LRESULT HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 protected:
 	void Notify(TNotifyUI& msg);
-	//消息处理
-	LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
-	LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled);
-
-	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-	LRESULT OnNcActivate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-	LRESULT OnNcCalcSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-	LRESULT OnNcPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-	LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-	LRESULT OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-
-public:
-	CPaintManagerUI m_pm;
 };
